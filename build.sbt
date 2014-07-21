@@ -8,7 +8,12 @@ scalaVersion := "2.11.1"
 
 libraryDependencies ++= Seq(
   jdbc,
-  anorm,
+  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
   cache,
-  ws
+  "com.mohiva" %% "play-silhouette" % "1.0",
+  "org.webjars" %% "webjars-play" % "2.3.0",
+  "org.webjars" % "bootstrap" % "3.1.1",
+  "org.webjars" % "jquery" % "1.11.0",
+  "net.codingwell" %% "scala-guice" % "4.0.0-beta4",
+  "com.typesafe.play" %% "play-slick" % "0.8.0-RC1"
 )
