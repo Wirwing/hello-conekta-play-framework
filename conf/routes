@@ -4,6 +4,11 @@
 
 # Home page
 GET         /                                @controllers.ApplicationController.index
+
+GET         /products                        @controllers.ProductsController.index
+GET         /products/add                    @controllers.ProductsController.add
+POST        /products                        @controllers.ProductsController.create
+
 GET         /signIn                          @controllers.ApplicationController.signIn
 GET         /signUp                          @controllers.ApplicationController.signUp
 GET         /signOut                         @controllers.ApplicationController.signOut
