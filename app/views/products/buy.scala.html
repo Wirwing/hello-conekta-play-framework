@@ -1,0 +1,67 @@
+@(user: models.User, product: models.Product)
+
+@import helper._
+@import bootstrap._
+
+@main("Conekta Showcase- Comprar Producto", Some(user)) {
+
+<div class="container">
+  <div class="row">
+
+    <h1> El producto @product.name tiene un precio de @product.price pesos</h1>
+
+    <div class="col-xs-12 col-md-4 col-md-offset-4">
+
+      <div class="panel panel-default">
+
+        <div class="panel-body">
+
+          <form class="card-form">
+
+            <div class="form-group">
+              <label>NAME</label>
+              <div class="input-group">
+                <input type="text" class="form-control input" required autofocus size="20" data-conekta="card[name]"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>CARD NUMBER</label>
+              <div class="input-group">
+                <input type="text" class="form-control" data-conekta="card[cvc]"/>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-7 col-md-7">
+                <div class="form-group">
+                  <label>EXPIRY DATE</label>
+                  <div class="col-xs-6 col-lg-6 pl-ziro">
+                    <input type="text" class="form-control" data-conekta="card[exp_month]" 
+                    maxlength="2" placeholder="MM" required />
+                  </div>
+                  <div class="col-xs-6 col-lg-6 pl-ziro">
+                    <input type="text" class="form-control" data-conekta="card[exp_year]"
+                    maxlength="2" placeholder="YY" required />
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-5 col-md-5 pull-right">
+                <div class="form-group">
+                  <label>CV CODE</label>
+                  <input type="password" class="form-control" placeholder="CV" 
+                  size="20" data-conekta="card[cvc]" required />
+                </div>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+      <a href="http://www.jquery2dotnet.com" class="btn btn-success btn-lg btn-block" role="button">Comprar</a>
+    </div>
+  </div>
+</div>
+
+}

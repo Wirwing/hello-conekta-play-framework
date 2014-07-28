@@ -5,9 +5,16 @@
 # Home page
 GET         /                                @controllers.ApplicationController.index
 
+#Product resource
 GET         /products                        @controllers.ProductsController.index
 GET         /products/add                    @controllers.ProductsController.add
+GET         /products/:id                    @controllers.ProductsController.show(id: Long)
+GET         /products/:id/buy                @controllers.ProductsController.buy(id: Long)
 POST        /products                        @controllers.ProductsController.create
+
+#Charge resource
+POST        /charges                         @controllers.ChargesController.create
+
 
 GET         /signIn                          @controllers.ApplicationController.signIn
 GET         /signUp                          @controllers.ApplicationController.signUp

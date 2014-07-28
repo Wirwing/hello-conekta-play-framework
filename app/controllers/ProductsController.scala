@@ -46,4 +46,20 @@ class ProductsController @Inject() (implicit val env: Environment[User, CachedCo
     
   }
 
+  def show(id: Long) = SecuredAction.async{ implicit request =>
+
+    ProductDAO.find(id).map{ product =>
+      Future.successful(Ok(views.html.products.show(request.identity, product)))
+    }.getOrElse(Future.successful(NotFound("Producto no encontrado!")))
+
+  }
+
+  def buy(id: Long) = SecuredAction.async{ implicit request =>
+
+    ProductDAO.find(id).map{ product =>
+      Future.successful(Ok(views.html.products.buy(request.identity, product)))
+    }.getOrElse(Future.successful(NotFound("Producto no encontrado!")))
+
+  }
+
 }

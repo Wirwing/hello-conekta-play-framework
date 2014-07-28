@@ -28,7 +28,7 @@ object ProductDAO {
    */
   def find(id: Long) = {
     DB withSession { implicit session =>
-      Future.successful(slickProducts.filter(_.id === id).firstOption)
+      slickProducts.filter(_.id === id).firstOption
     }
   }
   
