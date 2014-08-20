@@ -45,7 +45,7 @@ object ProductDAO {
           case Some(productFound) => slickProducts.filter(_.id === product.id).update(product)
           case None => slickProducts.insert(product)
         }
-        product // We do not change the user => return it
+        product // We do not change the entity => return it
       }
     }
   }

@@ -2,6 +2,7 @@ package models.daos.slick
 
 import play.api.db.slick.Config.driver.simple._
 import models.Product
+import models.Charge
 
 object DBConektaTableDefinitions {
 
@@ -14,5 +15,15 @@ object DBConektaTableDefinitions {
   }
 
   val slickProducts = TableQuery[Products]
+
+  class Charges(tag: Tag) extends Table[Charge](tag, "charge") {
+    def id = column[String]("id", O.PrimaryKey)
+    def description = column[String]("description")
+    def status = column[String]("status")
+    def amount = column[Double]("amount")
+    def * = (id, description, status, amount) <> ((Charge.apply _).tupled, Charge.unapply)
+  }
+
+  val slickCharges = TableQuery[Charges]
 
 }

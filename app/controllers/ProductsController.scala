@@ -1,11 +1,14 @@
 package controllers
 
 import models.User
+import models.Charge
+import models.Product
 import com.mohiva.play.silhouette.core.{LogoutEvent, Environment, Silhouette}
 import com.mohiva.play.silhouette.contrib.services.CachedCookieAuthenticator
 import scala.concurrent.Future
 import javax.inject.Inject
 import models.daos.ProductDAO
+import models.daos.ChargeDAO
 import forms._
 import play.api.Play
 import play.api.Logger
@@ -75,6 +78,16 @@ class ProductsController @Inject() (implicit val env: Environment[User, CachedCo
       },
       cardToken => {
         Logger.debug(cardToken)
+
+        val product = ProductDAO.find(id).get
+
+        val user = request.identity
+
+        user.saveCard(cardToken)
+
+        val charge = Charge.generateCharge(user, product)
+        ChargeDAO.save(charge)
+
         Future.successful(Redirect(routes.ProductsController.index))
       }
     )
