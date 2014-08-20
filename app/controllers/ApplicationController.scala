@@ -6,13 +6,18 @@ import com.mohiva.play.silhouette.contrib.services.CachedCookieAuthenticator
 import scala.concurrent.Future
 import javax.inject.Inject
 import forms._
+import models.services.UserService
+
+import play.api.Logger
 
 /**
  * The basic application controller.
  *
  * @param env The Silhouette environment.
  */
-class ApplicationController @Inject() (implicit val env: Environment[User, CachedCookieAuthenticator])
+class ApplicationController @Inject() (
+  implicit val env: Environment[User, CachedCookieAuthenticator],
+  val userService: UserService)
   extends Silhouette[User, CachedCookieAuthenticator] {
 
   /**
@@ -21,6 +26,8 @@ class ApplicationController @Inject() (implicit val env: Environment[User, Cache
    * @return The result to display.
    */
   def index = SecuredAction.async { implicit request =>
+    val user = request.identity
+    userService.createConektaCustomer(user)
     Future.successful(Ok(views.html.index(request.identity)))
   }
 
@@ -31,7 +38,9 @@ class ApplicationController @Inject() (implicit val env: Environment[User, Cache
    */
   def signIn = UserAwareAction.async { implicit request =>
     request.identity match {
-      case Some(user) => Future.successful(Redirect(routes.ApplicationController.index))
+      case Some(user) => {
+        Future.successful(Redirect(routes.ApplicationController.index))
+      }
       case None => Future.successful(Ok(views.html.signIn(SignInForm.form)))
     }
   }

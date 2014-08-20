@@ -10,6 +10,8 @@ import scala.concurrent.Future
 import models.daos.UserDAO
 import models.User
 
+import play.api.Logger
+
 /**
  * Handles actions to users.
  *
@@ -33,6 +35,14 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
    */
   def save(user: User) = userDAO.save(user)
 
+  def createConektaCustomer(user: User) = {
+
+    if(!user.conektaUserId.isDefined){
+      
+    }
+
+  }
+
   /**
    * Saves the social profile for a user.
    *
@@ -49,7 +59,8 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
           lastName = profile.lastName,
           fullName = profile.fullName,
           email = profile.email,
-          avatarURL = profile.avatarURL
+          avatarURL = profile.avatarURL,
+          conektaUserId = user.conektaUserId
         ))
       case None => // Insert a new user
         userDAO.save(User(
@@ -59,7 +70,8 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
           lastName = profile.lastName,
           fullName = profile.fullName,
           email = profile.email,
-          avatarURL = profile.avatarURL
+          avatarURL = profile.avatarURL,
+          conektaUserId = None
         ))
     }
   }

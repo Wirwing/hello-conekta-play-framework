@@ -27,4 +27,7 @@ trait UserService extends IdentityService[User] {
    * @return The user for whom the profile was saved.
    */
   def save[A <: AuthInfo](profile: CommonSocialProfile[A]): Future[User]
+
+  def createConektaCustomer(user: User)
+
 }

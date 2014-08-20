@@ -7,6 +7,8 @@ import services.SilhouetteModule
 import scala.concurrent.Future
 import com.google.inject.{Guice, Injector}
 import controllers.routes
+import play.api.Play
+import com.conekta
 
 /**
  * The global configuration.
@@ -20,6 +22,10 @@ object Global extends GlobalSettings with SecuredSettings with Logger {
   
   override def onStart(app: play.api.Application) = {
     super.onStart(app)
+
+    //Set Conekta API KEY
+    conekta.apiKey = Play.current.configuration.getString("conekta.api_key").getOrElse("")
+
     // Now the configuration is read and we can create our Injector.
     injector = Guice.createInjector(new SilhouetteModule())
   }
