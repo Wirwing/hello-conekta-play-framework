@@ -18,5 +18,5 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "1.11.0",
   "net.codingwell" %% "scala-guice" % "4.0.0-beta4",
   "com.typesafe.play" %% "play-slick" % "0.8.0-RC1",
-  "com.github.wirwing" %% "conekta-scala" % "0.0.1-SNAPSHOT"
+  "com.github.wirwing" %% "conekta-scala" % "0.0.2-SNAPSHOT"
 )

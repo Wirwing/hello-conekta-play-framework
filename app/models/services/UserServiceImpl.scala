@@ -10,6 +10,8 @@ import scala.concurrent.Future
 import models.daos.UserDAO
 import models.User
 
+import com.conekta.Customer
+
 import play.api.Logger
 
 /**
@@ -38,7 +40,11 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
   def createConektaCustomer(user: User) = {
 
     if(!user.conektaUserId.isDefined){
-      
+
+      val userMap = Map("name" -> user.fullName.get, "email" -> user.email.get)
+      val customer = Customer.create(userMap)
+      userDAO.save(user.copy(conektaUserId = Some(customer.id)))
+
     }
 
   }
@@ -59,8 +65,7 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
           lastName = profile.lastName,
           fullName = profile.fullName,
           email = profile.email,
-          avatarURL = profile.avatarURL,
-          conektaUserId = user.conektaUserId
+          avatarURL = profile.avatarURL
         ))
       case None => // Insert a new user
         userDAO.save(User(
