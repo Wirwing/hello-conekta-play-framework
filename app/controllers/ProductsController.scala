@@ -7,6 +7,8 @@ import scala.concurrent.Future
 import javax.inject.Inject
 import models.daos.ProductDAO
 import forms._
+import play.api.Play
+import play.api.Logger
 
 /**
  * The basic application controller.
@@ -54,11 +56,28 @@ class ProductsController @Inject() (implicit val env: Environment[User, CachedCo
 
   }
 
-  def buy(id: Long) = SecuredAction.async{ implicit request =>
+  def checkout(id: Long) = SecuredAction.async{ implicit request =>
 
     ProductDAO.find(id).map{ product =>
-      Future.successful(Ok(views.html.products.buy(request.identity, product)))
+
+      val key = Play.current.configuration.getString("conekta.api_key").getOrElse("")
+
+      Future.successful(Ok(views.html.products.checkout(request.identity, product, ProductForm.checkoutForm, key)))
     }.getOrElse(Future.successful(NotFound("Producto no encontrado!")))
+
+  }
+
+  def buy(id: Long) = SecuredAction.async{ implicit request =>
+
+    ProductForm.checkoutForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future.successful(Redirect(routes.ProductsController.checkout(id)))
+      },
+      cardToken => {
+        Logger.debug(cardToken)
+        Future.successful(Redirect(routes.ProductsController.index))
+      }
+    )
 
   }
 

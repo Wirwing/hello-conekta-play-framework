@@ -22,4 +22,11 @@ object ProductForm {
     )(Product.apply)(Product.unapply)
   )
 
+  /**
+   * A play framework form.
+   */
+  val checkoutForm = Form(
+    "cardToken" -> nonEmptyText
+  )
+
 }
