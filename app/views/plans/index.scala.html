@@ -1,0 +1,38 @@
+@(user: models.User, plans: List[com.conekta.Plan])
+
+@main("Conekta Showcase- Plans", Some(user)) {
+
+<div class="user col-md-6 col-md-offset-3">
+  <div class="row">
+
+    <table class="display table table-striped table-bordered" id="product">
+     <thead>
+       <tr>
+         <th>Id</th>
+         <th>Name</th>
+         <th>Interval</th>
+         <th>Price</th>
+       </tr>
+     </thead>
+     <tbody>
+
+      @plans.map { 
+        case (plan) => {
+          <tr>
+            <td>@plan.id</td>
+            <td>@plan.name</td>
+            <td>@plan.interval</td>
+            <td>@plan.amount @plan.currency</td>
+          </tr>
+        }
+      }
+
+     </tbody>
+   </table>
+
+ </div>
+
+ <a class="btn btn-info" href="@routes.PlansController.add">Add Plan</a>
+
+</div>
+}

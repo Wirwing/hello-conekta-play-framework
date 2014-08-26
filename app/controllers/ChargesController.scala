@@ -16,7 +16,7 @@ import forms._
 class ChargesController @Inject() (implicit val env: Environment[User, CachedCookieAuthenticator])
   extends Silhouette[User, CachedCookieAuthenticator] {
 
-  def create = SecuredAction.async{ implicit request =>
+  def index = SecuredAction.async{ implicit request =>
 
     Future.successful(Redirect(routes.ProductsController.index))
     

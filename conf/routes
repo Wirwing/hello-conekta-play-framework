@@ -14,8 +14,11 @@ POST        /products/:id/buy                @controllers.ProductsController.buy
 POST        /products                        @controllers.ProductsController.create
 
 #Charge resource
-POST        /charges                         @controllers.ChargesController.create
+GET         /charges                         @controllers.ChargesController.index
 
+#Charge resource
+GET         /plans                           @controllers.PlansController.index
+GET         /plans/add                       @controllers.PlansController.add
 
 GET         /signIn                          @controllers.ApplicationController.signIn
 GET         /signUp                          @controllers.ApplicationController.signUp

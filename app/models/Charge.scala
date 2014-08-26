@@ -4,7 +4,8 @@ case class Charge (
   id: String,
   description: String,
   status: String,
-  amount: Double
+  amount: Double,
+  userID: String
 )
 
 object Charge{
@@ -25,7 +26,12 @@ object Charge{
       throw new RuntimeException("Charge couldn't be paid.")  
     }
 
-    Charge(id = remoteCharge.id, status = remoteCharge.status, description = product.description, amount = product.price)
+    Charge(id = remoteCharge.id, 
+      status = remoteCharge.status,
+      description = product.description, 
+      amount = product.price,
+      userID = user.userID.toString
+      )
 
   }
 

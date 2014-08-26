@@ -27,6 +27,18 @@ object ChargeDAO {
   }
   
   /**
+   * Finds a charge by its id.
+   *
+   * @param id The id of the charge to find.
+   * @return The found charge or None if no charge for the given id could be found.
+   */
+  def findByUserId(userID: String) = {
+    DB withSession { implicit session =>
+      slickCharges.filter(_.userID === userID).firstOption
+    }
+  }
+
+  /**
    * Saves a charge.
    *
    * @param charge The charge to save.
