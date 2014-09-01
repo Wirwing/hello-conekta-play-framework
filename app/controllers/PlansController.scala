@@ -10,8 +10,8 @@ import models.daos.ChargeDAO
 import forms._
 import play.api.Play
 import play.api.Logger
-
 import com.conekta.Plan
+import utils.ConektaCurrencyMatcher
 
 /**
  * The basic application controller.
@@ -44,7 +44,11 @@ class PlansController @Inject() (implicit val env: Environment[User, CachedCooki
       },
       plan => {
 
+        val conektaAmount = ConektaCurrencyMatcher.convertToConektaAmount(plan._3)
+        val planMap = Map("name" -> plan._1, "trial_period_days" -> plan._2, "amount" -> conektaAmount, "currency" -> "MXN")
+
         Future.successful(Redirect(routes.PlansController.index))
+        
       })
 
   }

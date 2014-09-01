@@ -1,14 +1,14 @@
-@(user: models.User, planForm: Form[(String, String, String)])
+@(user: models.User, planForm: Form[(String, Int, Int)])
 
 @import helper._
 @import bootstrap._
 
 @main("Conekta Showcase- Add Plan", Some(user)) {
 
-@form(action = routes.ProductsController.create()) {
-            @text(planForm("name"), "Name")
-            @text(planForm("trialPeriodDays"), "Description")
-            @text(planForm("amount"), "Monthly amount")
+@form(action = routes.PlansController.create()) {
+            @text(planForm("name"), "Nombre")
+            @text(planForm("trialPeriodDays"), "Días de prueba")
+            @text(planForm("amount"), "Cargo mensual")
             <div class="form-group">
                 <div class="col-md-6 col-md-offset-3">
                     <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Submit</button>

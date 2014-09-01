@@ -9,13 +9,15 @@ import play.api.data.format.Formats._
  */
 object PlanForm {
 
+  val defaultNumber = default(number(min = 0), 0)
+
   /**
    * A play framework form.
    */
   val form = Form(
     tuple(
       "name" -> nonEmptyText,
-      "trialPeriodDays" -> nonEmptyText,
-      "amount" -> nonEmptyText))
+      "trialPeriodDays" -> defaultNumber,
+      "amount" -> defaultNumber))
 
 }

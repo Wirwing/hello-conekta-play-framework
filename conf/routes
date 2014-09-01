@@ -16,9 +16,10 @@ POST        /products                        @controllers.ProductsController.cre
 #Charge resource
 GET         /charges                         @controllers.ChargesController.index
 
-#Charge resource
+#Plan resource
 GET         /plans                           @controllers.PlansController.index
 GET         /plans/add                       @controllers.PlansController.add
+POST        /plans                           @controllers.PlansController.create
 
 GET         /signIn                          @controllers.ApplicationController.signIn
 GET         /signUp                          @controllers.ApplicationController.signUp
