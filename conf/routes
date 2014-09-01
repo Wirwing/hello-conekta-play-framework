@@ -20,6 +20,7 @@ GET         /charges                         @controllers.ChargesController.inde
 GET         /plans                           @controllers.PlansController.index
 GET         /plans/add                       @controllers.PlansController.add
 POST        /plans                           @controllers.PlansController.create
+POST        /plans/:id/delete                @controllers.PlansController.delete(id: String)
 
 GET         /signIn                          @controllers.ApplicationController.signIn
 GET         /signUp                          @controllers.ApplicationController.signUp

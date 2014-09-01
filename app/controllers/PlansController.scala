@@ -35,6 +35,15 @@ class PlansController @Inject() (implicit val env: Environment[User, CachedCooki
     Future.successful(Ok(views.html.plans.add(request.identity, PlanForm.form)))
   }
 
+  def delete(id: String) = SecuredAction.async{ implicit request =>
+    
+    val retreivedPlan = Plan.find(id)
+    retreivedPlan.delete()
+    
+    Future.successful(Redirect(routes.PlansController.index))
+    
+  } 
+  
   def create = SecuredAction.async { implicit request =>
 
     PlanForm.form.bindFromRequest.fold(
@@ -47,6 +56,7 @@ class PlansController @Inject() (implicit val env: Environment[User, CachedCooki
         val conektaAmount = ConektaCurrencyMatcher.convertToConektaAmount(plan._3)
         val planMap = Map("name" -> plan._1, "trial_period_days" -> plan._2, "amount" -> conektaAmount, "currency" -> "MXN")
 
+        Plan.create(planMap)
         Future.successful(Redirect(routes.PlansController.index))
         
       })
