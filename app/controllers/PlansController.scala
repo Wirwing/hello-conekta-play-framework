@@ -21,11 +21,6 @@ import utils.ConektaCurrencyMatcher
 class PlansController @Inject() (implicit val env: Environment[User, CachedCookieAuthenticator])
   extends Silhouette[User, CachedCookieAuthenticator] {
 
-  /**
-   * Handles the index action.
-   *
-   * @return The result to display.
-   */
   def index = SecuredAction.async { implicit request =>
     val plans = Plan.all
     Future.successful(Ok(views.html.plans.index(request.identity, plans)))
@@ -35,15 +30,15 @@ class PlansController @Inject() (implicit val env: Environment[User, CachedCooki
     Future.successful(Ok(views.html.plans.add(request.identity, PlanForm.form)))
   }
 
-  def delete(id: String) = SecuredAction.async{ implicit request =>
-    
+  def delete(id: String) = SecuredAction.async { implicit request =>
+
     val retreivedPlan = Plan.find(id)
     retreivedPlan.delete()
-    
+
     Future.successful(Redirect(routes.PlansController.index))
-    
-  } 
-  
+
+  }
+
   def create = SecuredAction.async { implicit request =>
 
     PlanForm.form.bindFromRequest.fold(
@@ -58,8 +53,20 @@ class PlansController @Inject() (implicit val env: Environment[User, CachedCooki
 
         Plan.create(planMap)
         Future.successful(Redirect(routes.PlansController.index))
-        
+
       })
+
+  }
+
+  def subscribe(id: String) = SecuredAction.async { implicit request =>
+
+    val plan = Plan.find(id)
+
+    val user = request.identity
+    user.createSubscription(plan.id)
+
+    Future.successful(Redirect(routes.PlansController.index).flashing(
+      "success" -> "Suscripción creada"))
 
   }
 
