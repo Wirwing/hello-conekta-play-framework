@@ -29,11 +29,11 @@ object DBConektaTableDefinitions {
   val slickCharges = TableQuery[Charges]
 
   class Subscriptions(tag: Tag) extends Table[Subscription](tag, "subscription") {
-    def id = column[String]("id", O.PrimaryKey)
-    def status = column[String]("status")
+    def id = column[String]("id", O.PrimaryKey, O.AutoInc)
+    def conektaSubscriptionID = column[String]("conektaSubscriptionID")
     def userID = column[String]("userID")
     def planID = column[String]("planID")
-    def * = (id, status, userID, planID) <> ((Subscription.apply _).tupled, Subscription.unapply)
+    def * = (id, conektaSubscriptionID, userID, planID) <> ((Subscription.apply _).tupled, Subscription.unapply)
   }
 
   val slickSubscriptions = TableQuery[Subscriptions]

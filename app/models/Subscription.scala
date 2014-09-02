@@ -14,8 +14,8 @@ import models.daos.slick.UserDAOSlick
 
 case class Subscription(
   id: String,
-  status: String,
-  userId: String,
+  conektaSubscriptionId: String,
+  userID: String,
   planID: String) {
 
   def destroy() = {
@@ -72,7 +72,7 @@ case class Subscription(
 
   private def user: User = {
     val userDao = new UserDAOSlick
-    Await.result(userDao.find(UUID.fromString(userId)), 10 seconds).get
+    Await.result(userDao.find(UUID.fromString(userID)), 10 seconds).get
   }
 
   private def remoteSubscription(): com.conekta.Subscription = {
@@ -91,7 +91,8 @@ object Subscription {
     val customer = Customer.find(customerId)
     val remoteSubscription = customer.createSubscription(Map("plan" -> planId))
 
-    val subscription = Subscription(remoteSubscription.id, remoteSubscription.status, user.userID.toString, planId)
+    val subscription = Subscription(id = null, conektaSubscriptionId = remoteSubscription.id,
+      userID = user.userID.toString, planID = planId)
     SubscriptionDAO.save(subscription)
 
   }
