@@ -1,4 +1,4 @@
-@(title: String, user: Option[models.User] = None)(content: Html)
+@(title: String, user: Option[models.User] = None)(content: Html)(implicit flash:Flash)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,6 +55,10 @@
             </div>
         </header>
         <main class="container">
+
+						@flash.get("message").map { msg => <div class="alert alert-success" role="alert">@msg</div> }
+						@flash.get("error").map { msg => <div class="alert alert-danger" role="alert">@msg</div> }
+
             <div class="starter-template row">
                 <h1>@title</h1>
                 @content
