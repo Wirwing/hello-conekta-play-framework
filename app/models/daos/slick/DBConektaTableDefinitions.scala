@@ -3,6 +3,7 @@ package models.daos.slick
 import play.api.db.slick.Config.driver.simple._
 import models.Product
 import models.Charge
+import models.Subscription
 
 object DBConektaTableDefinitions {
 
@@ -27,14 +28,14 @@ object DBConektaTableDefinitions {
 
   val slickCharges = TableQuery[Charges]
 
-//  class Subscriptions(tag: Tag) extends Table[Subscription](tag, "subscription") {
-//    def id = column[String]("id", O.PrimaryKey)
-//    def status = column[String]("status")
-//    def planID = column[String]("planID")
-//    def userID = column[String]("userID")
-//    def * = (id, description, status, amount, userID) <> ((Subscription.apply _).tupled, Subscription.unapply)
-//  }
-//
-//  val slickCharges = TableQuery[Subscriptions]
+  class Subscriptions(tag: Tag) extends Table[Subscription](tag, "subscription") {
+    def id = column[String]("id", O.PrimaryKey)
+    def status = column[String]("status")
+    def userID = column[String]("userID")
+    def planID = column[String]("planID")
+    def * = (id, status, userID, planID) <> ((Subscription.apply _).tupled, Subscription.unapply)
+  }
+
+  val slickSubscriptions = TableQuery[Subscriptions]
 
 }

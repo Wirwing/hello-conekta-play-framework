@@ -20,6 +20,7 @@ GET         /plans                           @controllers.PlansController.index
 GET         /plans/add                       @controllers.PlansController.add
 POST        /plans                           @controllers.PlansController.create
 POST        /plans/:id/delete                @controllers.PlansController.delete(id: String)
+POST        /plans/:id/subscribe             @controllers.PlansController.subscribe(id: String)
 
 #Card resource
 GET         /cards/add                       @controllers.CardsController.add

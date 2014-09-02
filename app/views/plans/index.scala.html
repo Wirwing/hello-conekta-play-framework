@@ -27,8 +27,13 @@
             <td>@plan.interval</td>
             <td>@plan.amount @plan.currency</td>
 						<td>
+							@form(routes.PlansController.subscribe(plan.id)) {        
+	    					<input type="submit" class="btn btn-danger" value="Suscribir" />      
+  						}
+						</td>
+						<td>
 							@form(routes.PlansController.delete(plan.id)) {        
-	    					<input type="submit" class="btn btn-danger" value="Eliminar plan" />      
+	    					<input type="submit" class="btn btn-danger" value="Eliminar" />      
   						}
 						</td>
           </tr>

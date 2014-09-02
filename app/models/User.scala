@@ -50,12 +50,4 @@ case class User(
 
   }
 
-  def createSubscription(planId: String) {
-
-    val customerId = conektaUserId.getOrElse(throw new RuntimeException("Can't."))
-    val customer = Customer.find(customerId)
-    val subscription = customer.createSubscription(Map("plan" -> planId))
-    
-  }
-
 }

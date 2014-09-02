@@ -1,6 +1,7 @@
 package controllers
 
 import models.User
+import models.Subscription
 import com.mohiva.play.silhouette.core.{ LogoutEvent, Environment, Silhouette }
 import com.mohiva.play.silhouette.contrib.services.CachedCookieAuthenticator
 import scala.concurrent.Future
@@ -61,10 +62,9 @@ class PlansController @Inject() (implicit val env: Environment[User, CachedCooki
   def subscribe(id: String) = SecuredAction.async { implicit request =>
 
     val plan = Plan.find(id)
-
     val user = request.identity
-    user.createSubscription(plan.id)
-
+    Subscription.generate(user, plan.id)
+    
     Future.successful(Redirect(routes.PlansController.index).flashing(
       "success" -> "Suscripción creada"))
 
