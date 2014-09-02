@@ -23,6 +23,26 @@ case class Subscription(
     SubscriptionDAO.delete(this)
   }
 
+  def statusDescription(): String = {
+
+    val remote = remoteSubscription()
+
+    val status = remote.status match {
+      case "in_trial" => "En periodo de prueba"
+      case "active" => "Activa"
+      case "past_due" => "Vencida"
+      case "paused" => "En pausa"
+      case "canceled" => "Cancelada"
+      case "pending_pause" => "Pendiente de pausa"
+      case "pending_cancelation" => "Pendiente de cancelación"
+      case _ => "Desconocido"
+
+    }
+
+    status
+
+  }
+
   def nextBillingDate(): Option[String] = {
 
     val remote = remoteSubscription()
@@ -52,7 +72,7 @@ case class Subscription(
 
   private def user: User = {
     val userDao = new UserDAOSlick
-    Await.result(userDao.find(UUID.fromString(userId)), 5 seconds).get
+    Await.result(userDao.find(UUID.fromString(userId)), 10 seconds).get
   }
 
   private def remoteSubscription(): com.conekta.Subscription = {
