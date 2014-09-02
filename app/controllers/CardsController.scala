@@ -33,12 +33,13 @@ class CardsController @Inject() (implicit val env: Environment[User, CachedCooki
       },
       cardToken => {
         Logger.debug(cardToken)
-        
+
         val user = request.identity
         user.saveCard(cardToken)
 
-        Future.successful(Redirect(routes.ApplicationController.index))
-        
+        Future.successful(Redirect(routes.ApplicationController.index).flashing(
+          "success" -> "Tarjeta añadida"))
+
       })
 
   }
