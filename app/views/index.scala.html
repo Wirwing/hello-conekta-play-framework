@@ -10,6 +10,25 @@
             </div>
             <hr class="col-md-12" />
         </div>
+
+				@user.currentSubscription match {
+			    	case Some(subscription) => {
+			    	
+			    	<div class="row data">
+							<hr class="col-md-12" />
+            	<div class="col-md-12">
+                	<div class="row">
+                    	<p class="col-md-6"><strong>Inicio de suscripción:</strong></p><p class="col-md-6">@subscription.startBillingDate</p>
+              	  </div>
+							</div>
+							<hr class="col-md-12" />
+        		</div>
+			    	 
+						}
+						
+						case None => {}
+				}
+
         <div class="row data">
             <div class="col-md-12">
                 <div class="row">

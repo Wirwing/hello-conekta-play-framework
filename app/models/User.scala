@@ -2,8 +2,8 @@ package models
 
 import com.mohiva.play.silhouette.core.{ LoginInfo, Identity }
 import java.util.UUID
-
 import com.conekta.Customer
+import models.daos.SubscriptionDAO
 
 /**
  * The user object.
@@ -26,6 +26,10 @@ case class User(
   avatarURL: Option[String],
   conektaUserId: Option[String]) extends Identity {
 
+  def currentSubscription(): Option[Subscription] = {
+    SubscriptionDAO.findByUserId(userID.toString())
+  }
+  
   def saveCard(cardToken: String) = {
 
     val customerId = conektaUserId.getOrElse(throw new RuntimeException("Can't."))

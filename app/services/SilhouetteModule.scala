@@ -5,7 +5,7 @@ import play.api.Play.current
 import play.Logger
 import com.google.inject.{ Provides, AbstractModule }
 import net.codingwell.scalaguice.ScalaModule
-import com.mohiva.play.silhouette.core.{EventBus, Environment}
+import com.mohiva.play.silhouette.core.{ EventBus, Environment }
 import com.mohiva.play.silhouette.core.utils._
 import com.mohiva.play.silhouette.core.services._
 import com.mohiva.play.silhouette.core.providers._
@@ -14,7 +14,7 @@ import com.mohiva.play.silhouette.core.providers.oauth1._
 import com.mohiva.play.silhouette.contrib.utils._
 import com.mohiva.play.silhouette.contrib.services._
 import com.mohiva.play.silhouette.contrib.daos.DelegableAuthInfoDAO
-import models.services.{UserService, UserServiceImpl}
+import models.services.{ UserService, UserServiceImpl }
 import models.daos._
 import models.daos.slick._
 import models.User
@@ -29,20 +29,11 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
    */
   def configure() {
     bind[UserService].to[UserServiceImpl]
-    val useSlick = Play.configuration.getBoolean("silhouette.seed.db.useSlick").getOrElse(false)
-    if (useSlick) {
-      Logger.debug("Binding to Slick DAO implementations.")
-      bind[UserDAO].to[UserDAOSlick]
-      bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordInfoDAOSlick]
-      bind[DelegableAuthInfoDAO[OAuth1Info]].to[OAuth1InfoDAOSlick]
-      bind[DelegableAuthInfoDAO[OAuth2Info]].to[OAuth2InfoDAOSlick]
-    } else {
-      Logger.debug("Binding to In-Memory DAO implementations.")
-      bind[UserDAO].to[UserDAOImpl]
-      bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordInfoDAO]
-      bind[DelegableAuthInfoDAO[OAuth1Info]].to[OAuth1InfoDAO]
-      bind[DelegableAuthInfoDAO[OAuth2Info]].to[OAuth2InfoDAO]
-    }
+    Logger.debug("Binding to Slick DAO implementations.")
+    bind[UserDAO].to[UserDAOSlick]
+    bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordInfoDAOSlick]
+    bind[DelegableAuthInfoDAO[OAuth1Info]].to[OAuth1InfoDAOSlick]
+    bind[DelegableAuthInfoDAO[OAuth2Info]].to[OAuth2InfoDAOSlick]
     bind[CacheLayer].to[PlayCacheLayer]
     bind[HTTPLayer].to[PlayHTTPLayer]
     bind[IDGenerator].toInstance(new SecureRandomIDGenerator())
@@ -69,10 +60,8 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
       userService,
       authenticatorService,
       Map(
-        credentialsProvider.id -> credentialsProvider
-      ),
-      eventBus
-    )
+        credentialsProvider.id -> credentialsProvider),
+      eventBus)
   }
 
   /**
@@ -95,8 +84,7 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
       httpOnlyCookie = Play.configuration.getBoolean("silhouette.authenticator.httpOnlyCookie").get,
       cookieIdleTimeout = Play.configuration.getInt("silhouette.authenticator.cookieIdleTimeout").get,
       cookieAbsoluteTimeout = Play.configuration.getInt("silhouette.authenticator.cookieAbsoluteTimeout"),
-      authenticatorExpiry = Play.configuration.getInt("silhouette.authenticator.authenticatorExpiry").get
-    ), cacheLayer, idGenerator, Clock())
+      authenticatorExpiry = Play.configuration.getInt("silhouette.authenticator.authenticatorExpiry").get), cacheLayer, idGenerator, Clock())
   }
 
   /**
