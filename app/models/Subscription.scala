@@ -18,9 +18,21 @@ case class Subscription(
   userID: String,
   planID: String) {
 
-  def destroy() = {
+  def resume() = {
+    remoteSubscription.resume
+  }
+  
+  def pause() = {
+    remoteSubscription.pause
+  }
+  
+  def cancel() = {
     remoteSubscription.cancel()
     SubscriptionDAO.delete(this)
+  }
+  
+  def status = {
+    remoteSubscription.status
   }
 
   def statusDescription(): String = {

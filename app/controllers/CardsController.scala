@@ -32,7 +32,6 @@ class CardsController @Inject() (implicit val env: Environment[User, CachedCooki
         Future.successful(Redirect(routes.CardsController.add))
       },
       cardToken => {
-        Logger.debug(cardToken)
 
         val user = request.identity
         user.saveCard(cardToken)

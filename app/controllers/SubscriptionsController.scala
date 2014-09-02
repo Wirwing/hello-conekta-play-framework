@@ -23,17 +23,44 @@ import models.daos.SubscriptionDAO
 class SubscriptionsController @Inject() (implicit val env: Environment[User, CachedCookieAuthenticator])
   extends Silhouette[User, CachedCookieAuthenticator] {
 
-  def delete(id: String) = SecuredAction.async { implicit request =>
+  def resume() = SecuredAction.async { implicit request =>
 
-    SubscriptionDAO.find(id).map { subscription =>
-      
-      subscription.destroy()
-      
+    val user = request.identity
+    user.currentSubscription.map { subscription =>
+
+      subscription.resume
       Future.successful(Redirect(routes.ApplicationController.index).flashing(
-      "success" -> "Suscripción cancelada"))
-      
+        "success" -> "Suscripción reactivada"))
+
     }.getOrElse(Future.successful(NotFound))
-    
+
+  }
+
+  def pause() = SecuredAction.async { implicit request =>
+
+    val user = request.identity
+    user.currentSubscription.map { subscription =>
+
+      subscription.pause
+      Future.successful(Redirect(routes.ApplicationController.index).flashing(
+        "success" -> "Suscripción pausada"))
+
+    }.getOrElse(Future.successful(NotFound))
+
+  }
+
+  def cancel() = SecuredAction.async { implicit request =>
+
+    val user = request.identity
+
+    user.currentSubscription.map { subscription =>
+
+      subscription.cancel
+      Future.successful(Redirect(routes.ApplicationController.index).flashing(
+        "success" -> "Suscripción cancelada"))
+
+    }.getOrElse(Future.successful(NotFound))
+
   }
 
 }

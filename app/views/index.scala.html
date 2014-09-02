@@ -1,5 +1,7 @@
 @(user: models.User)(implicit flash:Flash)
 
+@import helper._
+
 @main("Conekta Showcase - Home", Some(user)) {
     <div class="user col-md-6 col-md-offset-3">
         <div class="row">
@@ -28,6 +30,32 @@
 												<div class="row">
                     				<p class="col-md-6"><strong>Fecha de próximo cargo:</strong></p><p class="col-md-6">@subscription.nextBillingDate.getOrElse("")</p>
               	  			</div>
+												
+												<div class="row">
+                          <p class="col-md-6">
+                            @subscription.status match {
+                              
+                                  case "paused" => {
+                                      @form(routes.SubscriptionsController.resume) {        
+                                          <input type="submit" class="btn btn-info" value="Resumir" />      
+                                      }
+                                   }
+                                   
+                                  case _ =>{
+                                      @form(routes.SubscriptionsController.pause) {        
+                                          <input type="submit" class="btn btn-info" value="Pausar" />      
+                                      }
+                                   }
+                              
+                              }
+                          </p>
+                          <p class="col-md-6">
+                            @form(routes.SubscriptionsController.cancel) {        
+                                  <input type="submit" class="btn btn-warning" value="Cancelar" />      
+                              }
+                          </p>
+                        </div>
+
 											</div>
         					</div>
   						</div>

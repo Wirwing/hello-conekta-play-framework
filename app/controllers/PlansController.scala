@@ -67,7 +67,7 @@ class PlansController @Inject() (implicit val env: Environment[User, CachedCooki
     if (user.hasCard) {
 
       Subscription.generate(user, plan.id)
-      Future.successful(Redirect(routes.PlansController.index).flashing(
+      Future.successful(Redirect(routes.ApplicationController.index).flashing(
         "success" -> "Suscripción creada"))
 
     } else {
