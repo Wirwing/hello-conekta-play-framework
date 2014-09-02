@@ -14,7 +14,7 @@
          <th>Name</th>
          <th>Interval</th>
          <th>Price</th>
-				 <th>Eliminar</th>
+				 <th>Opciones</th>
        </tr>
      </thead>
      <tbody>
@@ -25,13 +25,12 @@
             <td>@plan.id</td>
             <td>@plan.name</td>
             <td>@plan.interval</td>
-            <td>@plan.amount @plan.currency</td>
+            <td>@(plan.amount/100) @plan.currency</td>
 						<td>
 							@form(routes.PlansController.subscribe(plan.id)) {        
-	    					<input type="submit" class="btn btn-danger" value="Suscribir" />      
+	    					<input type="submit" class="btn btn-info" value="Suscribir" />      
   						}
-						</td>
-						<td>
+  						<br/>
 							@form(routes.PlansController.delete(plan.id)) {        
 	    					<input type="submit" class="btn btn-danger" value="Eliminar" />      
   						}
