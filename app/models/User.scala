@@ -1,6 +1,6 @@
 package models
 
-import com.mohiva.play.silhouette.core.{LoginInfo, Identity}
+import com.mohiva.play.silhouette.core.{ LoginInfo, Identity }
 import java.util.UUID
 
 import com.conekta.Customer
@@ -24,17 +24,16 @@ case class User(
   fullName: Option[String],
   email: Option[String],
   avatarURL: Option[String],
-  conektaUserId: Option[String]
-) extends Identity{
+  conektaUserId: Option[String]) extends Identity {
 
   def saveCard(cardToken: String) = {
 
     val customerId = conektaUserId.getOrElse(throw new RuntimeException("Can't."))
     val customer = Customer.find(customerId)
 
-    if (customer.cards.isEmpty){
+    if (customer.cards.isEmpty) {
       customer.createCard(cardToken)
-    }else{
+    } else {
       customer.cards.head.update(Map("token" -> cardToken))
     }
 
@@ -48,7 +47,15 @@ case class User(
 
     val customer = Customer.find(conektaUserId.get)
     !customer.cards.isEmpty
+
+  }
+
+  def createSubscription(planId: String) {
+
+    val customerId = conektaUserId.getOrElse(throw new RuntimeException("Can't."))
+    val customer = Customer.find(customerId)
+    val subscription = customer.createSubscription(Map("plan" -> planId))
     
   }
-  
+
 }
