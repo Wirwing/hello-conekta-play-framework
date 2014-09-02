@@ -4,19 +4,30 @@ import com.conekta.Customer
 import models.daos.SubscriptionDAO
 import utils.ConektaCurrencyMatcher
 import models.daos.UserDAOImpl
+import models.daos.UserDAO
+import java.util.UUID
+import scala.concurrent.Await
+import scala.concurrent.duration._
 
 case class Subscription(
   id: String,
   status: String,
-  user: String,
+  userId: String,
   planID: String){
   
   def destroy() = {
     
-//    val customerId = user.conektaUserId.getOrElse(throw new RuntimeException("Can't."))
+    val customerId = user.conektaUserId.getOrElse(throw new RuntimeException("Can't."))
     val customer = Customer.find(customerId)
     customer.subscription.get.cancel()
     
+    SubscriptionDAO.delete(this)
+    
+  }
+  
+  private def user : User = {
+    val userDao = new UserDAOImpl
+    Await.result(userDao.find(UUID.fromString(userId)), 10 seconds).get
   }
   
 }
