@@ -18,7 +18,11 @@ class ChargesController @Inject() (implicit val env: Environment[User, CachedCoo
 
   def index = SecuredAction.async{ implicit request =>
 
-    Future.successful(Redirect(routes.ProductsController.index))
+    val user = request.identity
+
+    val charges = user.charges
+    
+    Future.successful(Ok(views.html.charges.index(request.identity, charges)))
     
   }
 

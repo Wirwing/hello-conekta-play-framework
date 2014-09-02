@@ -4,6 +4,7 @@ import com.mohiva.play.silhouette.core.{ LoginInfo, Identity }
 import java.util.UUID
 import com.conekta.Customer
 import models.daos.SubscriptionDAO
+import models.daos.ChargeDAO
 
 /**
  * The user object.
@@ -28,6 +29,10 @@ case class User(
 
   def currentSubscription(): Option[Subscription] = {
     SubscriptionDAO.findByUserId(userID.toString())
+  }
+  
+  def charges(): List[Charge] = {
+    ChargeDAO.findAllForUserId(userID.toString)
   }
   
   def saveCard(cardToken: String) = {

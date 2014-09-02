@@ -32,9 +32,9 @@ object ChargeDAO {
    * @param id The id of the charge to find.
    * @return The found charge or None if no charge for the given id could be found.
    */
-  def findByUserId(userID: String) = {
+  def findAllForUserId(userID: String) = {
     DB withSession { implicit session =>
-      slickCharges.filter(_.userID === userID).firstOption
+      slickCharges.filter(_.userID === userID).list
     }
   }
 

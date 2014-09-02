@@ -1,0 +1,32 @@
+@(user: models.User, charges: List[models.Charge])(implicit flash:Flash)
+
+@main("Conekta Showcase - Cargos", Some(user)) {
+
+<div class="user col-md-6 col-md-offset-3">
+  <div class="row">
+
+    <table class="display table table-striped table-bordered" id="product">
+     <thead>
+       <tr>
+         <th>Descripción</th>
+         <th>Estado</th>
+         <th>Cantidad</th>
+       </tr>
+     </thead>
+     <tbody>
+      @charges.map { 
+        case (charge) => {
+          <tr>
+            <td>@charge.description</td>
+            <td>@charge.status</td>
+            <td>@charge.amount</td> 
+          </tr>
+        }
+      }
+     </tbody>
+   </table>
+
+ </div>
+
+</div>
+}
