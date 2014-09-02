@@ -39,7 +39,7 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
 
   def createConektaCustomer(user: User) = {
 
-    if(!user.conektaUserId.isDefined){
+    if (!user.conektaUserId.isDefined) {
 
       val userMap = Map("name" -> user.fullName.get, "email" -> user.email.get)
       val customer = Customer.create(userMap)
@@ -65,8 +65,7 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
           lastName = profile.lastName,
           fullName = profile.fullName,
           email = profile.email,
-          avatarURL = profile.avatarURL
-        ))
+          avatarURL = profile.avatarURL))
       case None => // Insert a new user
         userDAO.save(User(
           userID = UUID.randomUUID(),
@@ -76,8 +75,7 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
           fullName = profile.fullName,
           email = profile.email,
           avatarURL = profile.avatarURL,
-          conektaUserId = None
-        ))
+          conektaUserId = None))
     }
   }
 }

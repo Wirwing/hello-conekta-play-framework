@@ -40,4 +40,15 @@ case class User(
 
   }
 
+  def hasCard(): Boolean = {
+
+    if (!conektaUserId.isDefined) {
+      false
+    }
+
+    val customer = Customer.find(conektaUserId.get)
+    !customer.cards.isEmpty
+    
+  }
+  
 }

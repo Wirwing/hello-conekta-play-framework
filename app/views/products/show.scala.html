@@ -1,5 +1,7 @@
 @(user: models.User, product: models.Product)
 
+@import helper._
+
 @main("Conekta Showcase- Product", Some(user)) {
 
 <div class="container">
@@ -29,7 +31,9 @@
 
             </tbody>
           </table>
-          <a href="@routes.ProductsController.checkout(product.id.get)">Comprar</a>
+					@form(routes.ProductsController.buy(product.id.get)) {        
+	    			<input type="submit" class="btn btn-danger" value="Comprar" />      
+  				}
         </div>
       </div>
     </div>

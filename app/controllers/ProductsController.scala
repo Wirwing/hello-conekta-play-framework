@@ -3,7 +3,7 @@ package controllers
 import models.User
 import models.Charge
 import models.Product
-import com.mohiva.play.silhouette.core.{LogoutEvent, Environment, Silhouette}
+import com.mohiva.play.silhouette.core.{ LogoutEvent, Environment, Silhouette }
 import com.mohiva.play.silhouette.contrib.services.CachedCookieAuthenticator
 import scala.concurrent.Future
 import javax.inject.Inject
@@ -33,11 +33,11 @@ class ProductsController @Inject() (implicit val env: Environment[User, CachedCo
     Future.successful(Ok(views.html.products.index(request.identity, products)))
   }
 
-  def add = SecuredAction.async{ implicit request =>
+  def add = SecuredAction.async { implicit request =>
     Future.successful(Ok(views.html.products.add(request.identity, ProductForm.form)))
   }
 
-  def create = SecuredAction.async{ implicit request =>
+  def create = SecuredAction.async { implicit request =>
 
     ProductForm.form.bindFromRequest.fold(
 
@@ -48,49 +48,31 @@ class ProductsController @Inject() (implicit val env: Environment[User, CachedCo
         ProductDAO.save(product)
         Future.successful(Redirect(routes.ProductsController.index))
       })
-    
+
   }
 
-  def show(id: Long) = SecuredAction.async{ implicit request =>
+  def show(id: Long) = SecuredAction.async { implicit request =>
 
-    ProductDAO.find(id).map{ product =>
+    ProductDAO.find(id).map { product =>
       Future.successful(Ok(views.html.products.show(request.identity, product)))
     }.getOrElse(Future.successful(NotFound("Producto no encontrado!")))
 
   }
 
-  def checkout(id: Long) = SecuredAction.async{ implicit request =>
+  def buy(id: Long) = SecuredAction.async { implicit request =>
 
-    ProductDAO.find(id).map{ product =>
+    val product = ProductDAO.find(id).get
+    val user = request.identity
 
-      val key = Play.current.configuration.getString("conekta.api_key").getOrElse("")
+    if (user.hasCard) {
 
-      Future.successful(Ok(views.html.products.checkout(request.identity, product, ProductForm.checkoutForm, key)))
-    }.getOrElse(Future.successful(NotFound("Producto no encontrado!")))
+      val charge = Charge.generateCharge(user, product)
+      ChargeDAO.save(charge)
+      Future.successful(Redirect(routes.ProductsController.index))
 
-  }
-
-  def buy(id: Long) = SecuredAction.async{ implicit request =>
-
-    ProductForm.checkoutForm.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful(Redirect(routes.ProductsController.checkout(id)))
-      },
-      cardToken => {
-        Logger.debug(cardToken)
-
-        val product = ProductDAO.find(id).get
-
-        val user = request.identity
-
-        user.saveCard(cardToken)
-
-        val charge = Charge.generateCharge(user, product)
-        ChargeDAO.save(charge)
-
-        Future.successful(Redirect(routes.ProductsController.index))
-      }
-    )
+    } else {
+      Future.successful(Redirect(routes.CardsController.add))
+    }
 
   }
 
